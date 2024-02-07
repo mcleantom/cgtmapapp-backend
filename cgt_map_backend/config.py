@@ -1,10 +1,10 @@
-from pydantic import BaseModel, Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import Literal, Annotated, Union
 from abc import ABC, abstractmethod
+from typing import Annotated, Literal, Union
+
 from mongoengine import connect
 from mongomock import MongoClient
-
+from pydantic import BaseModel, Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 __all__ = ["CGTMapBackendConfig", "MongoDBUri", "MongoDBMock"]
 
@@ -40,7 +40,7 @@ class MongoDBMock(MongoDBConfigBase):
     )
 
     def connect(self):
-        connect('mongoenginetest', host='mongodb://localhost', mongo_client_class=MongoClient)
+        connect("mongoenginetest", host="mongodb://localhost", mongo_client_class=MongoClient)
 
 
 MongoDBConfig = Annotated[Union[MongoDBUri, MongoDBMock], Field(discriminator="type")]

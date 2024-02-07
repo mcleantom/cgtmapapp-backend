@@ -1,12 +1,13 @@
-from mongoengine.document import Document
-from mongoengine.fields import StringField, PointField, DateField, DateTimeField, ObjectIdField, EnumField, FileField
 from datetime import datetime
-from bson.objectid import ObjectId
 from enum import Enum
+
+from bson.objectid import ObjectId
+from mongoengine.document import Document
+from mongoengine.fields import DateTimeField, EnumField, ObjectIdField, PointField, StringField
 
 
 class MongoBaseDocument(Document):
-    meta = {'abstract': True}
+    meta = {"abstract": True}
     _id: ObjectId = ObjectIdField(required=True, primary_key=True, default=ObjectId)
     _date_created: datetime = DateTimeField(default=datetime.utcnow)
 

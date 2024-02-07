@@ -1,8 +1,7 @@
-from .config import CGTMapBackendConfig
 from fastapi import FastAPI
+
 from .companies_router import create_companies_router
-from mongoengine import connect
-from .db_models import Company
+from .config import CGTMapBackendConfig
 
 db_str = "mongodb+srv://tom_mclean:password@cgt-app.37mlsd9.mongodb.net/test?retryWrites=true"
 

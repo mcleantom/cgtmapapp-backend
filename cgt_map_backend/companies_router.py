@@ -1,10 +1,10 @@
-from fastapi import APIRouter
-from .db_models import Company, ECompanyCategory
-import json
-from pydantic import BaseModel, HttpUrl, Field, ConfigDict
-from bson.objectid import ObjectId
-from .pydantic_annotations import PydanticObjectId
 from typing import Literal
+
+from fastapi import APIRouter
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
+
+from .db_models import Company, ECompanyCategory
+from .pydantic_annotations import PydanticObjectId
 
 
 class Point(BaseModel):
@@ -24,7 +24,7 @@ class CreateCompanyRequest(BaseModel):
 
 
 class CompanyResponse(BaseModel):
-    id:PydanticObjectId = Field(alias='_id')
+    id: PydanticObjectId = Field(alias="_id")
     name: str
     position: Point
     category: ECompanyCategory
@@ -38,12 +38,12 @@ class CompanyResponse(BaseModel):
 def create_companies_router() -> APIRouter:
     router = APIRouter()
 
-    @router.get('')
+    @router.get("")
     async def get_companies() -> list[CompanyResponse]:
         companies = Company.objects().all()
         return [CompanyResponse.model_validate(company) for company in companies]
 
-    @router.post('')
+    @router.post("")
     async def create_company(company_request: CreateCompanyRequest) -> CompanyResponse:
         company = Company(
             name=company_request.name,
@@ -51,7 +51,7 @@ def create_companies_router() -> APIRouter:
             category=company_request.category,
             description=company_request.description,
             website=str(company_request.website),
-            logo=str(company_request.logo)
+            logo=str(company_request.logo),
         )
         company.save()
 
@@ -62,10 +62,10 @@ def create_companies_router() -> APIRouter:
             category=company.category,
             description=company.description,
             website=company.website,
-            logo=company.logo
+            logo=company.logo,
         )
 
-    @router.delete('/{company_id}')
+    @router.delete("/{company_id}")
     async def delete_company(company_id: str) -> None:
         company = Company.objects.get(_id=company_id)
         company.delete()

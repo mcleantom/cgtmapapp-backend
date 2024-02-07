@@ -12,6 +12,6 @@ setup(
         "motor",
         "click",
         "mangum",
-        "mongoengine"
-    ]
+        "mongoengine",
+    ],
 )

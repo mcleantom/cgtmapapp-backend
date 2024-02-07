@@ -1,21 +1,18 @@
-from unittest import TestCase
-from cgt_map_backend.config import CGTMapBackendConfig
-from fastapi.testclient import TestClient
-from cgt_map_backend.app import create_app
-from cgt_map_backend.db_models import Company, ECompanyCategory
-from cgt_map_backend.companies_router import CreateCompanyRequest, CompanyResponse
 import json
+from unittest import TestCase
+
+from fastapi.testclient import TestClient
 from mongoengine import disconnect
+
+from cgt_map_backend.app import create_app
+from cgt_map_backend.companies_router import CompanyResponse, CreateCompanyRequest
+from cgt_map_backend.config import CGTMapBackendConfig
+from cgt_map_backend.db_models import Company, ECompanyCategory
 
 
 class TestConfig(TestCase):
-
     def setUp(self):
-        d = {
-            "mongo": {
-                "type": "MOCK"
-            }
-        }
+        d = {"mongo": {"type": "MOCK"}}
         self.config = CGTMapBackendConfig.parse_obj(d)
         self.app = create_app(self.config)
         self.client = TestClient(self.app)
@@ -30,7 +27,7 @@ class TestConfig(TestCase):
             category=ECompanyCategory.Consulting,
             description="Test Description",
             website="https://www.test.com",
-            logo="https://www.test.com/logo.png"
+            logo="https://www.test.com/logo.png",
         )
         response = self.client.post("/company", json=json.loads(request_data.json()))
         self.assertEqual(200, response.status_code)
@@ -49,7 +46,7 @@ class TestConfig(TestCase):
             category=ECompanyCategory.Consulting,
             description="Test Description",
             website="https://www.test.com/",
-            logo="https://www.test.com/logo.png"
+            logo="https://www.test.com/logo.png",
         ).save()
         response = self.client.get("/company")
         self.assertEqual(200, response.status_code)
@@ -69,7 +66,7 @@ class TestConfig(TestCase):
             category=ECompanyCategory.Consulting,
             description="Test Description",
             website="https://www.test.com/",
-            logo="https://www.test.com/logo.png"
+            logo="https://www.test.com/logo.png",
         ).save()
         response = self.client.delete(f"/company/{test_company._id}")
         self.assertEqual(200, response.status_code)
