@@ -4,3 +4,5 @@ motor
 fastapi
 click
 uvicorn
+mangum
+mongoengine

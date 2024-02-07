@@ -1,5 +1,5 @@
 from mongoengine.document import Document
-from mongoengine.fields import StringField, PointField, DateField, DateTimeField, ObjectIdField, EnumField
+from mongoengine.fields import StringField, PointField, DateField, DateTimeField, ObjectIdField, EnumField, FileField
 from datetime import datetime
 from bson.objectid import ObjectId
 from enum import Enum
@@ -13,11 +13,14 @@ class MongoBaseDocument(Document):
 
 class ECompanyCategory(str, Enum):
     Consulting = "Consulting"
+    Accelerator = "Accelerator"
+    Startup = "Startup"
 
 
 class Company(MongoBaseDocument):
     name: str = StringField(required=True, index=True)
     position = PointField(required=True, index=True)
     category: ECompanyCategory = EnumField(ECompanyCategory, required=True, index=True)
-    description: str = StringField()
-    website: str = StringField()
+    description: str = StringField(required=True)
+    website: str = StringField(required=True)
+    logo: str = StringField(required=True)

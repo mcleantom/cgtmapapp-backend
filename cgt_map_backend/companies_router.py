@@ -1,35 +1,73 @@
 from fastapi import APIRouter
 from .db_models import Company, ECompanyCategory
 import json
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, Field, ConfigDict
+from bson.objectid import ObjectId
+from .pydantic_annotations import PydanticObjectId
+from typing import Literal
+
+
+class Point(BaseModel):
+    type: Literal["Point"] = "Point"
+    coordinates: tuple[float, float]
+
+    model_config = ConfigDict(populate_by_name=True, from_attributes=True)
 
 
 class CreateCompanyRequest(BaseModel):
     name: str
-    position: tuple[float, float]
+    position: Point
     category: ECompanyCategory
     description: str
     website: HttpUrl
+    logo: HttpUrl
+
+
+class CompanyResponse(BaseModel):
+    id:PydanticObjectId = Field(alias='_id')
+    name: str
+    position: Point
+    category: ECompanyCategory
+    description: str
+    website: HttpUrl
+    logo: HttpUrl
+
+    model_config = ConfigDict(populate_by_name=True, from_attributes=True)
 
 
 def create_companies_router() -> APIRouter:
     router = APIRouter()
 
-    @router.get('/companies')
-    async def get_companies():
+    @router.get('')
+    async def get_companies() -> list[CompanyResponse]:
         companies = Company.objects().all()
-        return json.loads(companies.to_json())
+        return [CompanyResponse.model_validate(company) for company in companies]
 
-    @router.post('/companies')
-    async def create_company(company_request: CreateCompanyRequest):
+    @router.post('')
+    async def create_company(company_request: CreateCompanyRequest) -> CompanyResponse:
         company = Company(
             name=company_request.name,
-            position=company_request.position,
+            position=company_request.position.coordinates,
             category=company_request.category,
             description=company_request.description,
-            website=str(company_request.website)
+            website=str(company_request.website),
+            logo=str(company_request.logo)
         )
         company.save()
-        return json.loads(company.to_json())
+
+        return CompanyResponse(
+            id=company._id,
+            name=company.name,
+            position=Point(**{"type": "Point", "coordinates": company.position}),
+            category=company.category,
+            description=company.description,
+            website=company.website,
+            logo=company.logo
+        )
+
+    @router.delete('/{company_id}')
+    async def delete_company(company_id: str) -> None:
+        company = Company.objects.get(_id=company_id)
+        company.delete()
 
     return router

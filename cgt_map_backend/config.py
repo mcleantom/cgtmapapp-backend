@@ -1,20 +1,51 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Literal, Annotated, Union
+from abc import ABC, abstractmethod
+from mongoengine import connect
+from mongomock import MongoClient
 
 
-__all__ = ["CGTMapBackendConfig", "MongoDBConfig"]
+__all__ = ["CGTMapBackendConfig", "MongoDBUri", "MongoDBMock"]
 
 
-class MongoDBConfig(BaseSettings):
-    uri: str
-    db_name: str
+class MongoDBConfigBase(BaseSettings, ABC):
+    @abstractmethod
+    def connect(self):
+        pass
+
+
+class MongoDBUri(MongoDBConfigBase):
+    type: Literal["URI"] = Field("URI", env="MONGO_TYPE")
+    uri: str = Field(..., env="MONGO_URI")
+    db: str = Field(..., env="MONGO_DB")
 
     model_config = SettingsConfigDict(
         case_sensitive=False,
-        env_prefix="MONGO__",
+        env_prefix="MONGO_",
+        env_nested_delimiter="__",
     )
+
+    def connect(self):
+        connect(host=self.uri)
+
+
+class MongoDBMock(MongoDBConfigBase):
+    type: Literal["MOCK"] = Field("MOCK", env="MONGO_TYPE")
+
+    model_config = SettingsConfigDict(
+        case_sensitive=False,
+        env_prefix="MONGO_",
+        env_nested_delimiter="__",
+    )
+
+    def connect(self):
+        connect('mongoenginetest', host='mongodb://localhost', mongo_client_class=MongoClient)
+
+
+MongoDBConfig = Annotated[Union[MongoDBUri, MongoDBMock], Field(discriminator="type")]
 
 
 class CGTMapBackendConfig(BaseModel):
     title: str = "CGT Map Backend API"
-    mongo: MongoDBConfig = MongoDBConfig()
+    mongo: MongoDBConfig
