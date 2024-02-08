@@ -7,3 +7,4 @@ uvicorn
 mangum
 mongoengine
 boto3
+mongomock
