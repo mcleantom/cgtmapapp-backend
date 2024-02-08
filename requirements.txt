@@ -6,3 +6,4 @@ click
 uvicorn
 mangum
 mongoengine
+boto3

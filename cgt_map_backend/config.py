@@ -6,6 +6,8 @@ from mongomock import MongoClient
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from cgt_map_backend.db_uri_secret import get_secret
+
 __all__ = ["CGTMapBackendConfig", "MongoDBUri", "MongoDBMock"]
 
 
@@ -17,8 +19,8 @@ class MongoDBConfigBase(BaseSettings, ABC):
 
 class MongoDBUri(MongoDBConfigBase):
     type: Literal["URI"] = Field("URI", env="MONGO_TYPE")
-    uri: str = Field(..., env="MONGO_URI")
-    db: str = Field(..., env="MONGO_DB")
+    uri: str = Field(..., env="MONGO_URI", default_factory=get_secret)
+    db: str = Field("CGT-App", env="MONGO_DB")
 
     model_config = SettingsConfigDict(
         case_sensitive=False,
