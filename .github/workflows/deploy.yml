@@ -16,9 +16,9 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-2
 
     - name: Login to Amazon ECR
       run: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 767397888174.dkr.ecr.eu-west-2.amazonaws.com
@@ -30,7 +30,7 @@ jobs:
       run: docker tag cgt-map-backend:latest 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
 
     - name: Push docker image
-        run: docker push 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
+      run: docker push 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
 
     - name: Deploy Lambda Function
-        run: aws lambda update-function-code --function-name cgt-map-backend --image-uri 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
+      run: aws lambda update-function-code --function-name cgt-map-backend --image-uri 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
