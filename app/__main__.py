@@ -1,8 +1,9 @@
 import click
 import uvicorn
 
-from .app import create_app
-from .config import CGTMapBackendConfig
+from app.core.config import CGTMapBackendConfig
+from app.api import create_api
+from app.models import init, destruct
 
 
 @click.group()
@@ -16,5 +17,19 @@ def main():
 @click.option("--host", default="localhost", help="Host to run the server on")
 def run(config: str, port: int, host: str):
     config = CGTMapBackendConfig.parse_file(config)
-    app = create_app(config)
-    uvicorn.run(app, host=host, port=port)
+    api = create_api(config)
+    uvicorn.run(api, host=host, port=port)
+
+
+@main.command("init")
+def init_db():
+    init()
+
+
+@main.command("destruct")
+def destruct_db():
+    destruct()
+
+
+if __name__ == "__main__":
+    main()
