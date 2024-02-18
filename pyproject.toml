@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools >= 46.4.0", "wheel >= 0.34.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "app"
+version = "0.0.1"
+description = "CGT Map Backend"
+authors = [
+    {name = "Tom McLean", email = "mcleantom97@gmail.com"}
+]
+dynamic = ["dependencies"]
+
+[tool.black]
+line-length = 120
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.nox
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | alembic
+    | .ruff_cache
+)/
+'''
+
+[tool.ruff]
+line-length = 120
+ignore = ["F405", "B008"]
+select = ["E", "F", "B", "C4", "DTZ", "PTH", "I001"]
+# unfixable = ["C4", "B"]
+exclude = ["alembic"]
+
+[tool.ruff.per-file-ignores]
+"**/__init__.py" = ["F401", "F403"]
+
+[tool.ruff.isort]
+split-on-trailing-comma = true
+no-lines-before = ["local-folder"]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "this",
+    "local-folder"
+]
+
+[tool.ruff.isort.sections]
+"this" = ["app"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
