@@ -1,7 +1,6 @@
-from fastapi import APIRouter
-from app.models import (
-    Company,
-)
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
+from app.models import Company
 from app.schemas.company import CompanyCreate, CompanyInDB
 from app.api.deps import SessionDep
 from app.crud.crud_company import company as crud_company
@@ -40,5 +39,12 @@ def create_companies_router() -> APIRouter:
     def create_company(session: SessionDep, company: CompanyCreate):
         db_company = crud_company.create(session, obj_in=company)
         return convert_db_company_to_pydantic(db_company)
+
+    @router.delete("/{company_id}", response_class=JSONResponse)
+    def delete_company(session: SessionDep, company_id: int):
+        db_company = crud_company.delete(session, id=company_id)
+        if not db_company:
+            raise HTTPException(status_code=404, detail="Company not found")
+        return JSONResponse(content={"message": "Company deleted"})
 
     return router
