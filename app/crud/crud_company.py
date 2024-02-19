@@ -36,9 +36,16 @@ class CRUDCompany(CRUDBase[Company, CompanyCreate, CompanyUpdate]):
             update_data = obj_in
         else:
             update_data = obj_in.dict(exclude_unset=True)
-            update_data[
-                "position"
-            ] = f"POINT({update_data['position']['coordinates'][0]} {update_data['position']['coordinates'][1]})"
+            if "position" in update_data:
+                update_data[
+                    "position"
+                ] = f"POINT({update_data['position']['coordinates'][0]} {update_data['position']['coordinates'][1]})"
+
+        if "website" in update_data:
+            update_data["website"] = update_data["website"].unicode_string()
+        if "logo" in update_data:
+            update_data["logo"] = update_data["logo"].unicode_string()
+
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
 

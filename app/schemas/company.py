@@ -1,9 +1,7 @@
-from typing import Optional
-
-from pydantic import BaseModel, HttpUrl, ConfigDict
 from enum import Enum
-from typing import Literal
+from typing import Literal, Optional
 
+from pydantic import BaseModel, ConfigDict, HttpUrl
 
 __all__ = [
     "Point",
@@ -48,12 +46,12 @@ class CompanyCreate(BaseModel):
 
 
 class CompanyUpdate(BaseModel):
-    name: Optional[str]
-    position: Optional[Point]
-    category: Optional[ECompanyCategory]
-    description: Optional[str]
-    website: Optional[HttpUrl]
-    logo: Optional[HttpUrl]
+    name: Optional[str] = None
+    position: Optional[Point] = None
+    category: Optional[ECompanyCategory] = None
+    description: Optional[str] = None
+    website: Optional[HttpUrl] = None
+    logo: Optional[HttpUrl] = None
 
 
 class CompanyInDB(Company):
