@@ -11,6 +11,11 @@ authors = [
 ]
 dynamic = ["dependencies"]
 
+[project.optional-dependencies]
+dev = [
+    "testing.postgresql",
+]
+
 [tool.black]
 line-length = 120
 include = '\.pyi?$'
@@ -59,3 +64,6 @@ section-order = [
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools]
+py-modules = ["app"]

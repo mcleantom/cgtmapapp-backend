@@ -1,23 +1,12 @@
 from typing import Union
 
-from pydantic import HttpUrl, ConfigDict
-from sqlmodel import Field, SQLModel, Column, Enum
 from geoalchemy2 import Geometry, WKBElement
+from pydantic import ConfigDict
+from sqlmodel import Column, Enum, Field, SQLModel
+
 from app.schemas.company import ECompanyCategory
-from geoalchemy2.types import Geometry as GeometryType
 
-__all__ = ["Company", "CompanyCreate", "init", "destruct"]
-
-
-class CompanyCreate(SQLModel, table=False):
-    name: str
-    position: GeometryType
-    category: ECompanyCategory
-    description: str
-    website: HttpUrl
-    logo: HttpUrl
-
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+__all__ = ["Company", "init", "destruct"]
 
 
 class Company(SQLModel, table=True):
