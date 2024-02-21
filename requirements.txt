@@ -1,10 +1,7 @@
-pydantic >= 2.0
-pydantic-settings
-motor
 fastapi
-click
-uvicorn
-mangum
-mongoengine
-boto3
-mongomock
+sqlmodel
+pydantic
+geoalchemy2
+sqlalchemy
+psycopg2
+psycopg2-binary

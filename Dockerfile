@@ -9,12 +9,16 @@ RUN pip install \
         --target ${FUNCTION_DIR} \
         awslambdaric
 
-COPY setup.py ${FUNCTION_DIR}
-COPY cgt_map_backend ${FUNCTION_DIR}/cgt_map_backend
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc \
+    && pip install psycopg2
+
+COPY pyproject.toml ${FUNCTION_DIR}
+COPY app ${FUNCTION_DIR}/app
 COPY requirements.txt ${FUNCTION_DIR}
 RUN pip install -r requirements.txt
 
-COPY /app/* ${FUNCTION_DIR}/
+COPY /lambda_app/* ${FUNCTION_DIR}/
 
 ENTRYPOINT [ "python3", "-m", "awslambdaric" ]
 CMD [ "app.handler" ]

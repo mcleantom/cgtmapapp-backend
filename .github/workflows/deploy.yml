@@ -24,13 +24,13 @@ jobs:
       run: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 767397888174.dkr.ecr.eu-west-2.amazonaws.com
 
     - name: Build docker image
-      run: docker build -t cgt-map-backend .
+      run: docker build -t app .
 
     - name: Tag docker image
-      run: docker tag cgt-map-backend:latest 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
+      run: docker tag app:latest 767397888174.dkr.ecr.eu-west-2.amazonaws.com/app:latest
 
     - name: Push docker image
-      run: docker push 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
+      run: docker push 767397888174.dkr.ecr.eu-west-2.amazonaws.com/app:latest
 
     - name: Deploy Lambda Function
-      run: aws lambda update-function-code --function-name cgt-map-backend --image-uri 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
+      run: aws lambda update-function-code --function-name app --image-uri 767397888174.dkr.ecr.eu-west-2.amazonaws.com/app:latest

@@ -3,11 +3,17 @@ requires = ["setuptools >= 46.4.0", "wheel >= 0.34.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cgt_map_backend"
+name = "app"
 version = "0.0.1"
 description = "CGT Map Backend"
 authors = [
     {name = "Tom McLean", email = "mcleantom97@gmail.com"}
+]
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+dev = [
+    "testing.postgresql",
 ]
 
 [tool.black]
@@ -26,6 +32,8 @@ exclude = '''
     | buck-out
     | build
     | dist
+    | alembic
+    | .ruff_cache
 )/
 '''
 
@@ -34,7 +42,7 @@ line-length = 120
 ignore = ["F405", "B008"]
 select = ["E", "F", "B", "C4", "DTZ", "PTH", "I001"]
 # unfixable = ["C4", "B"]
-exclude = []
+exclude = ["alembic"]
 
 [tool.ruff.per-file-ignores]
 "**/__init__.py" = ["F401", "F403"]
@@ -52,4 +60,10 @@ section-order = [
 ]
 
 [tool.ruff.isort.sections]
-"this" = ["cgt_map_backend"]
+"this" = ["app"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools]
+py-modules = ["app"]

@@ -1,13 +1,16 @@
+# Use this code snippet in your app.
+# If you need more information about configurations
+# or implementing the sample code, visit the AWS docs:
+# https://aws.amazon.com/developer/language/python/
+
 import json
 
 import boto3
 from botocore.exceptions import ClientError
 
-__all__ = ["get_secret"]
-
 
 def get_secret():
-    secret_name = "cgtmap-db-uri"
+    secret_name = "sql_alchemy_db_uri"
     region_name = "eu-west-2"
 
     # Create a Secrets Manager client
@@ -23,4 +26,4 @@ def get_secret():
 
     secret = get_secret_value_response["SecretString"]
     secret = json.loads(secret)
-    return secret["cgt-map-db-uri"]
+    return secret["SQL_ALCHEMY_DATABASE_URI"]

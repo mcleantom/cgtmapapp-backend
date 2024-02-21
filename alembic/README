@@ -1,0 +1,11 @@
+To create a revision, run
+
+```bash
+alembic revision --autogenerate -m "MESSAGE"
+```
+
+To upgrade the database to the latest revision, run
+
+```bash
+alembic upgrade head
+```
