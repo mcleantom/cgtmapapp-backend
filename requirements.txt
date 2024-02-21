@@ -7,3 +7,4 @@ psycopg2
 psycopg2-binary
 shapely
 pydantic-settings
+boto3
