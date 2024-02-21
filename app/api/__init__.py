@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.api_v1.endpoints.companies import create_companies_router
 from app.core.config import CGTMapBackendConfig
@@ -14,12 +15,12 @@ def create_api(config: CGTMapBackendConfig) -> FastAPI:
     )
     app.include_router(create_companies_router(), prefix="/company", tags=["company"])
 
-    # @app.on_event("startup")
-    # async def startup_event():
-    #     init()
-    #
-    # @app.on_event("shutdown")
-    # async def shutdown_event():
-    #     destruct()
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     return app
