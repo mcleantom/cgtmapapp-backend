@@ -27,10 +27,10 @@ jobs:
       run: docker build -t app .
 
     - name: Tag docker image
-      run: docker tag app:latest 767397888174.dkr.ecr.eu-west-2.amazonaws.com/app:latest
+      run: docker tag app:latest 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
 
     - name: Push docker image
-      run: docker push 767397888174.dkr.ecr.eu-west-2.amazonaws.com/app:latest
+      run: docker push 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend:latest
 
     - name: Deploy Lambda Function
-      run: aws lambda update-function-code --function-name app --image-uri 767397888174.dkr.ecr.eu-west-2.amazonaws.com/app:latest
+      run: aws lambda update-function-code --function-name app --image-uri 767397888174.dkr.ecr.eu-west-2.amazonaws.com/cgt-map-backend
