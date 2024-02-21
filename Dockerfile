@@ -21,4 +21,4 @@ RUN pip install -r requirements.txt
 COPY /lambda_app/* ${FUNCTION_DIR}/
 
 ENTRYPOINT [ "python3", "-m", "awslambdaric" ]
-CMD [ "app.handler" ]
+CMD [ "lambda_app.handler" ]
