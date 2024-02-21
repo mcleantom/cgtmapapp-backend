@@ -13,6 +13,8 @@ RUN apt-get update \
     && apt-get -y install libpq-dev gcc \
     && pip install psycopg2
 
+RUN pip install mangum
+
 COPY pyproject.toml ${FUNCTION_DIR}
 COPY app ${FUNCTION_DIR}/app
 COPY requirements.txt ${FUNCTION_DIR}
