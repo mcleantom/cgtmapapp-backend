@@ -24,7 +24,7 @@ def convert_db_company_to_pydantic(db_company: Company) -> CompanyInDB:
         website=db_company.website,
         logo=db_company.logo,
         icon=db_company.icon,
-        banner_image=db_company.icon,
+        banner_image=db_company.banner_image,
     )
 
 
