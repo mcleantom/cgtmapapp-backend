@@ -17,6 +17,8 @@ class Company(SQLModel, table=True):
     description: str = Field(max_length=500)
     website: str = Field(max_length=100)
     logo: str = Field(max_length=100)
+    icon: str = Field(max_length=100, nullable=True)
+    banner_image: str = Field(max_length=100, nullable=True)
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 

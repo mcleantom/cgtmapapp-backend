@@ -19,6 +19,8 @@ class CRUDCompany(CRUDBase[Company, CompanyCreate, CompanyUpdate]):
             description=obj_in.description,
             website=obj_in.website.unicode_string(),
             logo=obj_in.logo.unicode_string(),
+            icon=obj_in.icon.unicode_string(),
+            banner_image=obj_in.banner_image.unicode_string(),
         )
         db.add(db_obj)
         db.commit()
@@ -45,6 +47,10 @@ class CRUDCompany(CRUDBase[Company, CompanyCreate, CompanyUpdate]):
             update_data["website"] = update_data["website"].unicode_string()
         if "logo" in update_data:
             update_data["logo"] = update_data["logo"].unicode_string()
+        if "icon" in update_data:
+            update_data["icon"] = update_data["icon"].unicode_string()
+        if "banner_image" in update_data:
+            update_data["banner_image"] = update_data["banner_image"].unicode_string()
 
         return super().update(db, db_obj=db_obj, obj_in=update_data)
 
