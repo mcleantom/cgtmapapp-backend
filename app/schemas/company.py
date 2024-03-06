@@ -25,6 +25,7 @@ class ECompanyCategory(str, Enum):
     Consulting = "Consulting"
     Accelerator = "Accelerator"
     Startup = "Startup"
+    University = "University"
 
 
 class Company(BaseModel):
@@ -34,6 +35,8 @@ class Company(BaseModel):
     description: str
     website: HttpUrl
     logo: HttpUrl
+    icon: Optional[HttpUrl]
+    banner_image: Optional[HttpUrl]
 
 
 class CompanyCreate(BaseModel):
@@ -43,6 +46,8 @@ class CompanyCreate(BaseModel):
     description: str
     website: HttpUrl
     logo: HttpUrl
+    icon: Optional[HttpUrl]
+    banner_image: Optional[HttpUrl]
 
 
 class CompanyUpdate(BaseModel):
@@ -52,6 +57,8 @@ class CompanyUpdate(BaseModel):
     description: Optional[str] = None
     website: Optional[HttpUrl] = None
     logo: Optional[HttpUrl] = None
+    icon: Optional[HttpUrl] = None
+    banner_image: Optional[HttpUrl] = None
 
 
 class CompanyInDB(Company):
