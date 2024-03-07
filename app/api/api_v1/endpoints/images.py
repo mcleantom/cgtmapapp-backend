@@ -1,4 +1,3 @@
-from io import BytesIO
 from uuid import uuid4
 
 import boto3
@@ -8,12 +7,14 @@ from app.core.config import ImageRouterConfig
 
 
 def upload_image_to_s3(file: UploadFile, bucket_name: str, cloudfront: str) -> str:
-    s3 = boto3.client("s3")
+    s3 = boto3.resource(service_name="s3")
     filename = f"{uuid4()}{file.filename}"
     s3_key = f"images/{filename}"
     try:
-        file_content = BytesIO(file.file.read())
-        s3.upload_fileobj(file_content, bucket_name, s3_key)
+        file.file.seek(0)
+        s3.Bucket(bucket_name).upload_fileobj(
+            Fileobj=file.file, Key=s3_key, ExtraArgs={"ContentType": file.content_type, "ACL": "public-read"}
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail="Could not upload file.") from e
     return f"{cloudfront}/{s3_key}"
