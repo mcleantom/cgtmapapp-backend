@@ -1,1 +1,6 @@
-{}
+{
+  "image_router": {
+    "bucket_name": "cgtimages.mcleanmarine.com",
+    "cloudfront_url": "https://cgtimages.mcleanmarine.com"
+  }
+}
