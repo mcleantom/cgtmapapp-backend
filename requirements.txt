@@ -8,3 +8,4 @@ psycopg2-binary
 shapely
 pydantic-settings
 boto3
+python-multipart

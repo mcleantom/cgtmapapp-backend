@@ -3,11 +3,16 @@ from pydantic_settings import BaseSettings
 
 from app.core.db_secret import get_secret
 
-__all__ = ["Settings", "settings", "CGTMapBackendConfig"]
+__all__ = ["Settings", "settings", "CGTMapBackendConfig", "ImageRouterConfig"]
+
+
+class ImageRouterConfig(BaseModel):
+    bucket_name: str
+    cloudfront_url: str
 
 
 class CGTMapBackendConfig(BaseModel):
-    pass
+    image_router: ImageRouterConfig
 
 
 class Settings(BaseSettings):
