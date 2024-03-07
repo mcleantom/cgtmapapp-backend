@@ -1,3 +1,4 @@
+from io import BytesIO
 from uuid import uuid4
 
 import boto3
@@ -11,14 +12,11 @@ def upload_image_to_s3(file: UploadFile, bucket_name: str, cloudfront: str) -> s
     filename = f"{uuid4()}{file.filename}"
     s3_key = f"images/{filename}"
     try:
-        file.file.read()
-        file.file.seek(0)
-        s3.upload_fileobj(file.file, bucket_name, s3_key)
+        file_content = BytesIO(file.file.read())
+        s3.upload_fileobj(file_content, bucket_name, s3_key)
     except Exception as e:
         raise HTTPException(status_code=500, detail="Could not upload file.") from e
-    s3.generate_presigned_url("get_object", Params={"Bucket": bucket_name, "Key": s3_key})
-    cloudfront_url = f"{cloudfront}/{s3_key}"
-    return cloudfront_url
+    return f"{cloudfront}/{s3_key}"
 
 
 def create_images_router(config: ImageRouterConfig) -> APIRouter:
