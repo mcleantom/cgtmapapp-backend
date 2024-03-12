@@ -29,9 +29,8 @@ def create_images_router(config: ImageRouterConfig) -> APIRouter:
     @router.post("")
     def post_upload_file(request: Request, file: UploadFile = File(...)) -> str:
         logger.info(f"Uploading file {file.filename}")
-        logger.info("Request headers: ", request.headers)
-        logger.info("Request body: ", request.body)
-        logger.info("Content type: ", file.content_type)
+        logger.info(f"Request headers: {request.headers}")
+        logger.info(f"Content type: {file.content_type}")
         s3_url = upload_image_to_s3(file, config.bucket_name, config.cloudfront_url)
         return s3_url
 
