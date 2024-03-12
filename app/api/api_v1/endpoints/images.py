@@ -13,7 +13,9 @@ def upload_image_to_s3(file: UploadFile, bucket_name: str, cloudfront: str) -> s
     try:
         file.file.seek(0)
         s3.Bucket(bucket_name).upload_fileobj(
-            Fileobj=file.file, Key=s3_key, ExtraArgs={"ContentType": file.content_type, "ACL": "public-read"}
+            Fileobj=file.file,
+            Key=s3_key,
+            ExtraArgs={"ContentType": file.content_type, "ACL": "public-read", "ContentEncoding": "base64"},
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail="Could not upload file.") from e
