@@ -1,7 +1,8 @@
 from uuid import uuid4
 
 import boto3
-from fastapi import APIRouter, File, HTTPException, UploadFile
+from fastapi import APIRouter, File, HTTPException, Request, UploadFile
+from loguru import logger
 
 from app.core.config import ImageRouterConfig
 
@@ -26,7 +27,11 @@ def create_images_router(config: ImageRouterConfig) -> APIRouter:
     router = APIRouter()
 
     @router.post("")
-    def post_upload_file(file: UploadFile = File(...)) -> str:
+    def post_upload_file(request: Request, file: UploadFile = File(...)) -> str:
+        logger.info(f"Uploading file {file.filename}")
+        logger.info("Request headers: ", request.headers)
+        logger.info("Request body: ", request.body)
+        logger.info("Content type: ", file.content_type)
         s3_url = upload_image_to_s3(file, config.bucket_name, config.cloudfront_url)
         return s3_url
 
